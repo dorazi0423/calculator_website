@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>숫자 계산기</title>
+
+    <!-- css설정 -->
+    <link rel="stylesheet" href="number-calculator.css" />
+
+    <!-- 파비콘 -->
+    <link rel="icon" href="favicon.png" type="image/png" />
+  </head>
+  <body>
+    <!-- 컨테이너 시작 -->
+    <div class="container">
+      <!-- --wrapper 시작-- -->
+      <div class="wrapper">
+        <!-- 헤더 시작 -->
+        <header class="header">
+          <a href="index.html" class="header_name"><h1>간단한계산기</h1></a>
+          <div class="header_btn">
+            <a class="btn">숫자계산기</a>
+            <a class="btn">단위계산기</a>
+            <a class="btn">일상계산기</a>
+          </div>
+        </header>
+        <!-- --헤더 끝-- -->
+        <!-- 메인 시작 -->
+        <main class="main">
+          <div class="calculator">
+            <div class="result">
+              <input id="result" class="result_input" readonly />
+            </div>
+            <div class="calculator_btn">
+              <button class="btn">모두삭제</button>
+
+              <button class="btn">×</button>
+              <button class="btn">÷</button>
+              <button class="btn">지우기</button>
+
+              <button class="btn">7</button>
+              <button class="btn">8</button>
+              <button class="btn">9</button>
+              <button class="btn">%</button>
+              <button class="btn">4</button>
+              <button class="btn">5</button>
+              <button class="btn">6</button>
+
+              <button class="btn">-</button>
+              <button class="btn">1</button>
+              <button class="btn">2</button>
+              <button class="btn">3</button>
+
+              <button class="btn">+</button>
+              <button class="btn">0</button>
+              <button class="btn">.</button>
+              <button class="btn equal">=</button>
+            </div>
+          </div>
+        </main>
+        <!-- --메인끝-- -->
+      </div>
+      <!-- --wrapper 끝-- -->
+      <!-- 푸터 시작 -->
+      <footer class="footer">푸터</footer>
+      <!-- --푸터 끝-- -->
+    </div>
+    <!-- --컨테이너 끝-- -->
+
+    <!-- 자바스크립트 코드 -->
+    <script>
+      document.addEventListener("keydown", function (event) {
+        let key = event.key; // 키보드 입력값 가져오기
+
+        // 숫자와 연산자만 처리 (필요 시 조건 추가 가능)
+        if (
+          !isNaN(key) ||
+          ["+", "-", "*", "/", "%", ".", "Enter", "Backspace"].includes(key)
+        ) {
+          if (key === "Enter") {
+            // calculateResult(); // 엔터키로 결과 계산 (별도 함수)
+          } else if (key === "Backspace") {
+            resultDisplay.value = resultDisplay.value.slice(0, -1);
+          } else {
+            resultDisplay.value += key; // 숫자나 연산자 추가
+          }
+        }
+      });
+
+      function updateScroll() {
+        resultDisplay.scrollLeft = resultDisplay.scrollWidth;
+      }
+
+      // 변수 초기화
+      let resultDisplay = document.getElementById("result");
+      // 결과창
+
+      // 계산기 버튼 클릭 이벤트
+      let buttons = document.getElementsByClassName("btn");
+
+      Array.from(buttons).forEach((button) => {
+        button.addEventListener("click", function () {
+          let buttonValue = button.innerText;
+
+          switch (buttonValue) {
+            case "모두삭제":
+              resultDisplay.value = "";
+              break;
+            case "지우기":
+              resultDisplay.value = resultDisplay.value.slice(0, -1);
+              break;
+            case "숫자계산기":
+              break;
+            case "단위계산기":
+              break;
+            case "일상계산기":
+              break;
+            default:
+              resultDisplay.value += buttonValue;
+          }
+          updateScroll();
+          // 결과창에 입력값 출력
+        });
+      });
+
+      function calculateResult() {
+        try {
+          // console.log(resultDisplay.value);
+          // resultDisplay.value = eval(
+          //   resultDisplay.value.replace("×", "*").replace("÷", "/")
+          // );
+
+          console.log(
+            eval(resultDisplay.value.replace("×", "*").replace("÷", "/"))
+          );
+        } catch (error) {
+          resultDisplay.value = "오류";
+        }
+      }
+    </script>
+  </body>
+</html>

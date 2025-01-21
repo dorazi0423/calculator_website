@@ -1,0 +1,84 @@
+/* 폰트 */
+@font-face {
+  font-family: "dalmoori";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/dalmoori.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gothic_Goding";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/naverfont_05@1.0/Gothic_Goding.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "dalmoori", Arial, sans-serif;
+  font-size: 2em;
+}
+
+/* 기본설정 */
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.container {
+  background: linear-gradient(to bottom, #d31313, #d5b6b6 0%, #a2b130 100%);
+}
+
+/* wrapper 헤더 및 메인 */
+.container .wrapper {
+  background-color: #3498db;
+  height: 100vh; /* 화면 전체 크기 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+/* 헤더 */
+.container .wrapper .header {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: yellow;
+}
+
+/* --헤더 끝 -- */
+
+/* 메인 시작 */
+.container .wrapper .main {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #f09ab8;
+}
+/* --메인 끝-- */
+/* --wrapper 헤더 및 메인 끝-- */
+
+/* 푸터 */
+.container .footer {
+  height: 20vh; /* 화면 전체 크기 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* font-size: 3em; */
+  font-family: "Gothic_Goding", Arial, sans-serif;
+  background-color: #f39c12;
+}
+
+/* --푸터-- */
