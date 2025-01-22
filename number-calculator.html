@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="number-calculator.css" />
 
     <!-- 파비콘 -->
-    <link rel="icon" href="favicon.png" type="image/png" />
+    <link rel="icon" href="img/favicon.png" type="image/png" />
   </head>
   <body>
     <!-- 컨테이너 시작 -->
@@ -20,11 +20,12 @@
         <header class="header">
           <a href="index.html" class="header_name"><h1>간단한계산기</h1></a>
           <div class="header_btn">
-            <a class="btn">숫자계산기</a>
-            <a class="btn">단위계산기</a>
-            <a class="btn">일상계산기</a>
+            <a href="number-calculator.html" class="btn green1">숫자계산기</a>
+            <a href="unit-calculator.html" class="btn green2">단위계산기</a>
+            <a href="daily-calculator.html" class="btn green3">일상계산기</a>
           </div>
         </header>
+
         <!-- --헤더 끝-- -->
         <!-- 메인 시작 -->
         <main class="main">
@@ -79,7 +80,8 @@
           ["+", "-", "*", "/", "%", ".", "Enter", "Backspace"].includes(key)
         ) {
           if (key === "Enter") {
-            // calculateResult(); // 엔터키로 결과 계산 (별도 함수)
+            event.preventDefault(); // 엔터 키의 기본 동작 방지
+            calculateResult(); // 엔터키로 결과 계산 (별도 함수)
           } else if (key === "Backspace") {
             resultDisplay.value = resultDisplay.value.slice(0, -1);
           } else {
@@ -116,6 +118,9 @@
               break;
             case "일상계산기":
               break;
+            case "=":
+              calculateResult();
+              break;
             default:
               resultDisplay.value += buttonValue;
           }
@@ -125,15 +130,14 @@
       });
 
       function calculateResult() {
+        const expression = resultDisplay.value
+          .replace("×", "*")
+          .replace("÷", "/")
+          .replace("%", "*0.01");
         try {
-          // console.log(resultDisplay.value);
-          // resultDisplay.value = eval(
-          //   resultDisplay.value.replace("×", "*").replace("÷", "/")
-          // );
+          const result = new Function(`return ${expression}`)();
 
-          console.log(
-            eval(resultDisplay.value.replace("×", "*").replace("÷", "/"))
-          );
+          resultDisplay.value = result;
         } catch (error) {
           resultDisplay.value = "오류";
         }
