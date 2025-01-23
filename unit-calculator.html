@@ -6,6 +6,7 @@
     <title>숫자 계산기</title>
 
     <!-- css설정 -->
+
     <link rel="stylesheet" href="unit-calculator.css" />
 
     <!-- 파비콘 -->
@@ -24,7 +25,7 @@
             <a class="btn">단위계산기</a>
             <a class="btn">일상계산기</a>
             <button id="menuToggle" class="menuToggle hidden">
-              <img src="img/icons8-menu-100.png" />
+              <img src="img/menuToggle.png" />
             </button>
             <!-- id 추가 -->
           </div>
@@ -41,18 +42,56 @@
             <form action="#">
               <label for="lang">Language</label>
               <select name="languages" id="lang">
-                <option value="javascript">JavaScript</option>
-                <option value="php">PHP</option>
-                <option value="java">Java</option>
-                <option value="golang">Golang</option>
-                <option value="python">Python</option>
-                <option value="c#">C#</option>
-                <option value="C++">C++</option>
-                <option value="erlang">Erlang</option>
+                <option value="javascript">길이</option>
+                <option value="php">면적</option>
+                <option value="java">부피</option>
+                <option value="golang">속도</option>
+                <option value="python">시간</option>
+                <option value="c#">압력</option>
+                <option value="C++">질량</option>
+                <option value="erlang">주파수</option>
+                <option value="erlang">각도</option>
+                <option value="erlang">에너지</option>
+                <option value="erlang">힘</option>
+                <option value="erlang">전력</option>
               </select>
             </form>
-            <input />
-            = <input />
+            <div class="input_group">
+              <input />
+              <form action="#">
+                <select name="languages" id="lang">
+                  <option value="javascript">길이</option>
+                  <option value="php">면적</option>
+                  <option value="java">부피</option>
+                  <option value="golang">속도</option>
+                  <option value="python">시간</option>
+                  <option value="c#">압력</option>
+                  <option value="C++">질량</option>
+                  <option value="erlang">주파수</option>
+                  <option value="erlang">각도</option>
+                  <option value="erlang">에너지</option>
+                  <option value="erlang">힘</option>
+                  <option value="erlang">전력</option>
+                </select>
+              </form>
+              = <input />
+              <form action="#">
+                <select name="languages" id="lang">
+                  <option value="javascript">길이</option>
+                  <option value="php">면적</option>
+                  <option value="java">부피</option>
+                  <option value="golang">속도</option>
+                  <option value="python">시간</option>
+                  <option value="c#">압력</option>
+                  <option value="C++">질량</option>
+                  <option value="erlang">주파수</option>
+                  <option value="erlang">각도</option>
+                  <option value="erlang">에너지</option>
+                  <option value="erlang">힘</option>
+                  <option value="erlang">전력</option>
+                </select>
+              </form>
+            </div>
           </div>
         </main>
         <!-- --메인 끝-- -->
@@ -81,6 +120,12 @@
             button.classList.remove("hidden");
           });
           menuToggle.classList.add("hidden");
+
+          // 화면 크기가 700px 이상으로 변경되면 메뉴 숨기기
+          if (!navMenu.classList.contains("hidden")) {
+            navMenu.classList.remove("visible");
+            navMenu.classList.add("hidden");
+          }
         }
       }
 

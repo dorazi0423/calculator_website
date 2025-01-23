@@ -94,13 +94,13 @@ a {
 .container .wrapper .main .round:hover {
   filter: brightness(0.8);
 }
-.pink {
+.green1 {
   background-color: #bad8b6;
 }
-.yellow {
+.green2 {
   background-color: #d9dfc6;
 }
-.blue {
+.green3 {
   background-color: #e1eacd;
 }
 
@@ -128,9 +128,27 @@ a {
     width: 100%;
   }
 }
+/* 700px이하일때 */
+@media screen and (max-width: 800px) {
+  .container .wrapper .main {
+    flex-direction: column;
+  }
+
+  .container .wrapper .header {
+    font-size: 12vw;
+  }
+
+  .container .wrapper .main .round {
+    width: 50%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    border-radius: 15px;
+    font-size: 4vw;
+  }
+}
 
 /* 700px이하일때 */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 600px) {
   .container .wrapper .main {
     flex-direction: column;
   }

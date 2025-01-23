@@ -131,9 +131,32 @@ a {
   justify-content: center;
   align-items: center;
   text-align: center;
+  gap: 50px;
   background-color: #f09ab8;
 }
-
+.container .wrapper .main .unit_box {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  gap: 40px;
+  background-color: greenyellow;
+  box-sizing: border-box;
+}
+.container .wrapper .main .input_group {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+.container .wrapper .main .input_group input {
+  width: 30%;
+}
 /* --메인 끝-- */
 /* --wrapper 헤더 및 메인 끝-- */
 
