@@ -75,7 +75,6 @@ a {
 .container .wrapper .header .header_btn .btn:hover {
   background-color: #a2b130;
 }
-/* 복사시작 */
 .container .wrapper .header .header_btn .menuToggle {
   background-color: transparent;
   padding: 0;
@@ -131,25 +130,8 @@ a {
   justify-content: center;
   align-items: center;
   text-align: center;
+  gap: 50px;
   background-color: #f09ab8;
-}
-.container .wrapper .main .unit_box {
-  display: flex;
-  position: absolute;
-  top: 40%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: greenyellow;
-  box-sizing: border-box;
-}
-.container .wrapper .main .unit_box .unit-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-direction: column;
-  gap: 30px;
 }
 
 /* --메인 끝-- */

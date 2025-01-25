@@ -21,78 +21,54 @@
         <header class="header">
           <a href="index.html" class="header_name"><h1>간단한계산기</h1></a>
           <div class="header_btn">
-            <a class="btn">숫자계산기</a>
-            <a class="btn">단위계산기</a>
-            <a class="btn">일상계산기</a>
+            <a href="number-calculator.html" class="btn green1">숫자계산기</a>
+            <a href="unit-calculator.html" class="btn green2">단위계산기</a>
+            <a href="daily-calculator.html" class="btn green3">일상계산기</a>
             <button id="menuToggle" class="menuToggle hidden">
               <img src="img/menuToggle.png" />
             </button>
-            <!-- id 추가 -->
           </div>
         </header>
         <nav id="navMenu" class="nav-menu hidden">
           <a href="number-calculator.html" class="btn">숫자계산기</a>
-          <a href="#" class="btn">단위계산기</a>
-          <a href="#" class="btn">일상계산기</a>
+          <a href="unit-calculator.html" class="btn">단위계산기</a>
+          <a href="daily-calculator.html" class="btn">일상계산기</a>
         </nav>
         <!-- --헤더 끝-- -->
         <!-- 메인시작 -->
         <main class="main">
-          <div class="unit_box">
-            <form action="#">
-              <label for="lang">Language</label>
-              <select name="languages" id="lang">
-                <option value="javascript">길이</option>
-                <option value="php">면적</option>
-                <option value="java">부피</option>
-                <option value="golang">속도</option>
-                <option value="python">시간</option>
-                <option value="c#">압력</option>
-                <option value="C++">질량</option>
-                <option value="erlang">주파수</option>
-                <option value="erlang">각도</option>
-                <option value="erlang">에너지</option>
-                <option value="erlang">힘</option>
-                <option value="erlang">전력</option>
-              </select>
-            </form>
-            <div class="input_group">
-              <input />
-              <form action="#">
-                <select name="languages" id="lang">
-                  <option value="javascript">길이</option>
-                  <option value="php">면적</option>
-                  <option value="java">부피</option>
-                  <option value="golang">속도</option>
-                  <option value="python">시간</option>
-                  <option value="c#">압력</option>
-                  <option value="C++">질량</option>
-                  <option value="erlang">주파수</option>
-                  <option value="erlang">각도</option>
-                  <option value="erlang">에너지</option>
-                  <option value="erlang">힘</option>
-                  <option value="erlang">전력</option>
-                </select>
-              </form>
-              = <input />
-              <form action="#">
-                <select name="languages" id="lang">
-                  <option value="javascript">길이</option>
-                  <option value="php">면적</option>
-                  <option value="java">부피</option>
-                  <option value="golang">속도</option>
-                  <option value="python">시간</option>
-                  <option value="c#">압력</option>
-                  <option value="C++">질량</option>
-                  <option value="erlang">주파수</option>
-                  <option value="erlang">각도</option>
-                  <option value="erlang">에너지</option>
-                  <option value="erlang">힘</option>
-                  <option value="erlang">전력</option>
-                </select>
+          <main class="main">
+            <div class="unit_box">
+              <form id="unit-form" class="unit-form">
+                <div>
+                  <label for="unit-type">변환 유형</label>
+                  <select name="unit-type" id="unit-type">
+                    <option value="length">길이</option>
+                    <option value="area">면적</option>
+                    <option value="volume">부피</option>
+                    <option value="time">시간</option>
+                  </select>
+                </div>
+                <div>
+                  <!-- 첫 번째 입력 -->
+                  <input
+                    id="input-value"
+                    type="number"
+                    placeholder="값을 입력하세요"
+                  />
+                  <select name="from-unit" id="from-unit"></select>
+                  =
+                  <!-- 두 번째 입력 -->
+                  <input
+                    id="output-value"
+                    type="number"
+                    placeholder="변환된 값"
+                  />
+                  <select name="to-unit" id="to-unit"></select>
+                </div>
               </form>
             </div>
-          </div>
+          </main>
         </main>
         <!-- --메인 끝-- -->
       </div>
@@ -181,6 +157,101 @@
           button.style.backgroundColor = ""; // 기본 색상으로 돌아감
         });
       });
+
+      const unitTypeSelect = document.getElementById("unit-type"); //변환유형
+      const fromUnitSelect = document.getElementById("from-unit"); //변환단위
+      const toUnitSelect = document.getElementById("to-unit"); //결과단위
+      const inputValue = document.getElementById("input-value"); //변환값
+      const outputValue = document.getElementById("output-value"); //결과값
+
+      // 각 변환 종류에 맞는 단위 목록
+      const units = {
+        length: ["미터", "킬로미터", "센티미터", "밀리미터", "마일"],
+        area: ["제곱미터", "제곱킬로미터", "헥타르", "에이커", "평"],
+        volume: ["리터", "밀리리터", "세제곱미터", "갤런", "쿼트"],
+        time: ["초", "분", "시간", "일", "주", "월", "년"],
+      };
+
+      // 선택한 변환 유형에 따라 단위 목록 업데이트
+      unitTypeSelect.addEventListener("change", updateUnits);
+
+      // 페이지가 처음 렌더링 할 때 실행
+      updateUnits();
+
+      // 변환 유형에 따라서 단위가 달라지는 함수
+      function updateUnits() {
+        const selectedUnitType = unitTypeSelect.value; //선택한 변환유형
+
+        // from-unit, to-unit 콤보박스 비우기
+        fromUnitSelect.innerHTML = "";
+        toUnitSelect.innerHTML = "";
+
+        // 선택된 변환 유형에 맞는 단위로 콤보박스 추가
+        units[selectedUnitType].forEach((unit) => {
+          const fromOption = document.createElement("option"); //변환값
+          fromOption.value = unit;
+          fromOption.textContent = unit; //단위
+          fromUnitSelect.appendChild(fromOption);
+
+          const toOption = document.createElement("option"); //결과값
+          toOption.value = unit;
+          toOption.textContent = unit; //단위
+          toUnitSelect.appendChild(toOption);
+        });
+
+        // 값이 변경될 때마다 변환
+        inputValue.addEventListener("input", convertUnits); //변환값
+        outputValue.addEventListener("input", convertUnits); //변환값
+        fromUnitSelect.addEventListener("change", convertUnits); //변환단위
+        toUnitSelect.addEventListener("change", convertUnits); //결과단위
+      }
+
+      // 단위 변환해주는 함수
+      function convertUnits(event) {
+        const sourceElement = event.target; // 이벤트가 발생한 요소
+        const fromUnit = fromUnitSelect.value; // 변환단위
+        const toUnit = toUnitSelect.value; // 결과단위
+        let value = parseFloat(sourceElement.value); // 입력값
+
+        // 변환값
+        let convertedValue;
+
+        // 길이
+        if (unitTypeSelect.value === "length") {
+          if (fromUnit === "미터" && toUnit === "미터") {
+            convertedValue = value;
+          } else if (fromUnit === "미터" && toUnit === "킬로미터") {
+            convertedValue = value / 1000;
+          } else if (fromUnit === "킬로미터" && toUnit === "미터") {
+            convertedValue = value * 1000;
+          }
+        }
+
+        // 만약 inputValue가 수정되었다면 outputValue를 업데이트
+        if (sourceElement === inputValue) {
+          // inputValue 수정 시 outputValue 업데이트
+
+          outputValue.value =
+            convertedValue === 0 || convertedValue
+              ? convertedValue
+              : "변환을 지원하지 않습니다.";
+        }
+
+        // 만약 outputValue가 수정되었다면 inputValue를 업데이트
+        if (sourceElement === outputValue) {
+          // outputValue 수정 시 inputValue 업데이트
+          inputValue.value = outputValue.value =
+            convertedValue === 0 || convertedValue
+              ? convertedValue
+              : "변환을 지원하지 않습니다.";
+        }
+      }
+
+      // inputValue에 입력될 때마다 convertUnits 함수 호출
+      inputValue.addEventListener("input", convertUnits);
+
+      // outputValue에 입력될 때마다 convertUnits 함수 호출
+      outputValue.addEventListener("input", convertUnits);
     </script>
   </body>
 </html>

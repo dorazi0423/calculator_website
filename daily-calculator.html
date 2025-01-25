@@ -1,11 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>숫자 계산기</title>
+
+    <!-- css설정 -->
+
+    <link rel="stylesheet" href="daily-calculator.css" />
+
     <!-- 파비콘 -->
     <link rel="icon" href="img/favicon.png" type="image/png" />
   </head>
-  <body></body>
+  <body>
+    <!-- 컨테이너 시작 -->
+    <div class="container">
+      <!-- wrapper 시작 -->
+      <div class="wrapper">
+        <!-- 헤더 시작 -->
+        <header class="header">
+          <a href="index.html" class="header_name"><h1>간단한계산기</h1></a>
+          <div class="header_btn">
+            <a href="number-calculator.html" class="btn green1">숫자계산기</a>
+            <a href="unit-calculator.html" class="btn green2">단위계산기</a>
+            <a href="daily-calculator.html" class="btn green3">일상계산기</a>
+            <button id="menuToggle" class="menuToggle hidden">
+              <img src="img/menuToggle.png" />
+            </button>
+          </div>
+        </header>
+        <nav id="navMenu" class="nav-menu hidden">
+          <a href="number-calculator.html" class="btn">숫자계산기</a>
+          <a href="unit-calculator.html" class="btn">단위계산기</a>
+          <a href="daily-calculator.html" class="btn">일상계산기</a>
+        </nav>
+        <!-- --헤더 끝-- -->
+        <!-- 메인시작 -->
+        <main class="main"></main>
+        <!-- --메인 끝-- -->
+      </div>
+      <!-- --wrapper 끝-- -->
+      <!-- 푸터 시작 -->
+      <footer class="footer">푸터</footer>
+      <!-- --푸터 끝-- -->
+    </div>
+    <!-- --컨테이너 끝-- -->
+    <script>
+      const menuToggle = document.getElementById("menuToggle");
+      const navMenu = document.getElementById("navMenu");
+      const buttons = document.querySelectorAll(".header_btn .btn");
+
+      // 화면 크기 변경 시 메뉴 상태 갱신
+      function updateMenuVisibility() {
+        if (window.innerWidth <= 700) {
+          menuToggle.classList.remove("hidden");
+
+          buttons.forEach((button) => {
+            button.classList.add("hidden");
+          });
+        } else {
+          buttons.forEach((button) => {
+            button.classList.remove("hidden");
+          });
+          menuToggle.classList.add("hidden");
+
+          // 화면 크기가 700px 이상으로 변경되면 메뉴 숨기기
+          if (!navMenu.classList.contains("hidden")) {
+            navMenu.classList.remove("visible");
+            navMenu.classList.add("hidden");
+          }
+        }
+      }
+
+      // 페이지 로드 및 크기 변경 시 상태 갱신
+      updateMenuVisibility();
+
+      menuToggle.addEventListener("click", (event) => {
+        // 메뉴 토글
+        if (navMenu.classList.contains("hidden")) {
+          navMenu.classList.remove("hidden");
+          navMenu.classList.add("visible");
+        } else {
+          navMenu.classList.remove("visible");
+          navMenu.classList.add("hidden");
+        }
+        event.stopPropagation(); // 클릭 이벤트 전파 방지
+      });
+
+      // 화면의 다른 부분 클릭 시 메뉴 닫기
+      document.addEventListener("click", () => {
+        navMenu.classList.remove("visible");
+        navMenu.classList.add("hidden");
+      });
+
+      // 화면 크기 변경 시 메뉴 상태 갱신
+      window.addEventListener("resize", updateMenuVisibility);
+
+      // 색상 목록
+      const colorList = [
+        "#F0F0D7",
+        "#D0DDD0",
+        "#EFB6C8",
+        "#C6E7FF",
+        "#FFF9BF",
+        "#F0C1E1",
+      ];
+
+      // 목록 내 모든 버튼 요소 가져오기
+      const menu_buttons = document.querySelectorAll(".nav-menu .btn");
+
+      // 각 버튼에 hover 이벤트 리스너 추가
+      menu_buttons.forEach((button) => {
+        button.addEventListener("mouseover", () => {
+          // 색상 목록에서 무작위 색상 선택
+          const randomColor =
+            colorList[Math.floor(Math.random() * colorList.length)];
+          // 선택된 색상을 버튼 배경색으로 설정
+          button.style.backgroundColor = randomColor;
+        });
+
+        button.addEventListener("mouseout", () => {
+          // 마우스가 버튼을 벗어나면 원래 색으로 돌아가게 할 수 있습니다.
+          button.style.backgroundColor = ""; // 기본 색상으로 돌아감
+        });
+      });
+    </script>
+  </body>
 </html>
