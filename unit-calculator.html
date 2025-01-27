@@ -211,30 +211,169 @@
         const sourceElement = event.target; // 이벤트가 발생한 요소
         const fromUnit = fromUnitSelect.value; // 변환단위
         const toUnit = toUnitSelect.value; // 결과단위
-        let value = parseFloat(sourceElement.value); // 입력값
+        let value = parseFloat(inputValue.value); //입력값
 
         // 변환값
         let convertedValue;
 
         // 길이
+        function roundToSevenDecimals(value) {
+          // 소수점 자리수가 7자리 이하일 경우 그대로 반환
+          const stringValue = value.toString();
+          const decimalIndex = stringValue.indexOf(".");
+
+          // 소수점이 있고, 소수점 이하 자리가 7자리 이하라면 그대로 반환
+          if (
+            decimalIndex !== -1 &&
+            stringValue.length - decimalIndex - 1 <= 7
+          ) {
+            return value;
+          }
+
+          // 그렇지 않으면 소수점 7자리에서 반올림
+          return Math.round(value * 1e7) / 1e7;
+        }
+
+        // 길이 변환
         if (unitTypeSelect.value === "length") {
+          // 미터 기준
           if (fromUnit === "미터" && toUnit === "미터") {
-            convertedValue = value;
+            convertedValue =
+              value % 1 === 0 ? value : roundToSevenDecimals(value);
           } else if (fromUnit === "미터" && toUnit === "킬로미터") {
-            convertedValue = value / 1000;
-          } else if (fromUnit === "킬로미터" && toUnit === "미터") {
-            convertedValue = value * 1000;
+            convertedValue =
+              (value / 1000) % 1 === 0
+                ? value / 1000
+                : roundToSevenDecimals(value / 1000);
+          } else if (fromUnit === "미터" && toUnit === "센티미터") {
+            convertedValue =
+              (value * 100) % 1 === 0
+                ? value * 100
+                : roundToSevenDecimals(value * 100);
+          } else if (fromUnit === "미터" && toUnit === "밀리미터") {
+            convertedValue =
+              (value * 1000) % 1 === 0
+                ? value * 1000
+                : roundToSevenDecimals(value * 1000);
+          } else if (fromUnit === "미터" && toUnit === "마일") {
+            convertedValue =
+              (value / 1609) % 1 === 0
+                ? value / 1609
+                : roundToSevenDecimals(value / 1609);
+          }
+          // 킬로미터 기준
+          else if (fromUnit === "킬로미터" && toUnit === "미터") {
+            convertedValue =
+              (value * 1000) % 1 === 0
+                ? value * 1000
+                : roundToSevenDecimals(value * 1000);
+          } else if (fromUnit === "킬로미터" && toUnit === "센티미터") {
+            convertedValue =
+              (value * 100000) % 1 === 0
+                ? value * 100000
+                : roundToSevenDecimals(value * 100000);
+          } else if (fromUnit === "킬로미터" && toUnit === "밀리미터") {
+            convertedValue =
+              (value * 1000000) % 1 === 0
+                ? value * 1000000
+                : roundToSevenDecimals(value * 1000000);
+          } else if (fromUnit === "킬로미터" && toUnit === "마일") {
+            convertedValue =
+              (value * 0.621371) % 1 === 0
+                ? value * 0.621371
+                : roundToSevenDecimals(value * 0.621371); // 1킬로미터 = 0.621371 마일
+          } else if (fromUnit === "킬로미터" && toUnit === "킬로미터") {
+            convertedValue =
+              value % 1 === 0 ? value : roundToSevenDecimals(value);
+          }
+
+          // 센티미터 기준
+          else if (fromUnit === "센티미터" && toUnit === "미터") {
+            convertedValue =
+              (value / 100) % 1 === 0
+                ? value / 100
+                : roundToSevenDecimals(value / 100);
+          } else if (fromUnit === "센티미터" && toUnit === "킬로미터") {
+            convertedValue =
+              (value / 100000) % 1 === 0
+                ? value / 100000
+                : roundToSevenDecimals(value / 100000);
+          } else if (fromUnit === "센티미터" && toUnit === "센티미터") {
+            convertedValue =
+              value % 1 === 0 ? value : roundToSevenDecimals(value);
+          } else if (fromUnit === "센티미터" && toUnit === "밀리미터") {
+            convertedValue =
+              (value * 10) % 1 === 0
+                ? value * 10
+                : roundToSevenDecimals(value * 10);
+          } else if (fromUnit === "센티미터" && toUnit === "마일") {
+            convertedValue =
+              (value / 160934.4) % 1 === 0
+                ? value / 160934.4
+                : roundToSevenDecimals(value / 160934.4);
+          }
+          // 밀리미터 기준
+          else if (fromUnit === "밀리미터" && toUnit === "미터") {
+            convertedValue =
+              (value / 1000) % 1 === 0
+                ? value / 1000
+                : roundToSevenDecimals(value / 1000);
+          } else if (fromUnit === "밀리미터" && toUnit === "킬로미터") {
+            convertedValue =
+              (value / 1000000) % 1 === 0
+                ? value / 1000000
+                : roundToSevenDecimals(value / 1000000);
+          } else if (fromUnit === "밀리미터" && toUnit === "센티미터") {
+            convertedValue =
+              (value / 10) % 1 === 0
+                ? value / 10
+                : roundToSevenDecimals(value / 10);
+          } else if (fromUnit === "밀리미터" && toUnit === "밀리미터") {
+            convertedValue =
+              value % 1 === 0 ? value : roundToSevenDecimals(value);
+          } else if (fromUnit === "밀리미터" && toUnit === "마일") {
+            convertedValue =
+              (value / 1609344) % 1 === 0
+                ? value / 1609344
+                : roundToSevenDecimals(value / 1609344);
+          }
+
+          // 마일 기준
+          else if (fromUnit === "마일" && toUnit === "미터") {
+            convertedValue =
+              (value * 1609.34) % 1 === 0
+                ? value * 1609.34
+                : roundToSevenDecimals(value * 1609.34);
+          } else if (fromUnit === "마일" && toUnit === "킬로미터") {
+            convertedValue =
+              (value * 1.60934) % 1 === 0
+                ? value * 1.60934
+                : roundToSevenDecimals(value * 1.60934);
+          } else if (fromUnit === "마일" && toUnit === "센티미터") {
+            convertedValue =
+              (value * 160934) % 1 === 0
+                ? value * 160934
+                : roundToSevenDecimals(value * 160934);
+          } else if (fromUnit === "마일" && toUnit === "밀리미터") {
+            convertedValue =
+              (value * 1609344) % 1 === 0
+                ? value * 1609344
+                : roundToSevenDecimals(value * 1609344);
+          } else if (fromUnit === "마일" && toUnit === "마일") {
+            convertedValue =
+              value % 1 === 0 ? value : roundToSevenDecimals(value);
           }
         }
 
         // 만약 inputValue가 수정되었다면 outputValue를 업데이트
-        if (sourceElement === inputValue) {
-          // inputValue 수정 시 outputValue 업데이트
-
-          outputValue.value =
-            convertedValue === 0 || convertedValue
-              ? convertedValue
-              : "변환을 지원하지 않습니다.";
+        // inputValue 수정 시 outputValue 업데이트
+        if (
+          (sourceElement === inputValue ||
+            sourceElement === toUnitSelect ||
+            sourceElement === fromUnitSelect) &&
+          !isNaN(convertedValue)
+        ) {
+          outputValue.value = convertedValue;
         }
 
         // 만약 outputValue가 수정되었다면 inputValue를 업데이트
