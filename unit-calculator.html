@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>숫자 계산기</title>
+    <title>단위 계산기</title>
 
     <!-- css설정 -->
 
@@ -25,7 +25,7 @@
             <a href="unit-calculator.html" class="btn green2">단위계산기</a>
             <a href="daily-calculator.html" class="btn green3">일상계산기</a>
             <button id="menuToggle" class="menuToggle hidden">
-              <img src="img/menuToggle.png" />
+              <img src="img/menuToggle_red.png" />
             </button>
           </div>
         </header>
@@ -49,7 +49,7 @@
                     <option value="time">시간</option>
                   </select>
                 </div>
-                <div>
+                <div class="unit_input">
                   <!-- 첫 번째 입력 -->
                   <input
                     id="input-value"
@@ -206,180 +206,132 @@
         toUnitSelect.addEventListener("change", convertUnits); //결과단위
       }
 
-      // 단위 변환해주는 함수
+      let lastUpdatedElement = null;
+      let value;
+      let unit = [];
+
+      // 단위 변환 비율
+      const conversionRates = {
+        length: {
+          미터: {
+            미터: 1,
+            킬로미터: 0.001,
+            센티미터: 100,
+            밀리미터: 1000,
+            마일: 0.000621371,
+          },
+          킬로미터: {
+            킬로미터: 1,
+            미터: 1000,
+            센티미터: 100000,
+            밀리미터: 1000000,
+            마일: 0.621371,
+          },
+          센티미터: {
+            센티미터: 1,
+            미터: 0.01,
+            킬로미터: 0.00001,
+            밀리미터: 10,
+            마일: 0.0000062137,
+          },
+          밀리미터: {
+            밀러미터: 1,
+            미터: 0.001,
+            킬로미터: 0.000001,
+            센티미터: 0.1,
+            마일: 0.000000621371,
+          },
+          마일: {
+            마일: 1,
+            미터: 1609.34,
+            킬로미터: 1.60934,
+            센티미터: 160934,
+            밀리미터: 1609340,
+          },
+        },
+      };
+
+      // 단위 변환 함수
+      function convert(value, fromUnit, toUnit, unitType) {
+        const rate = conversionRates[unitType][fromUnit]?.[toUnit];
+        return rate !== undefined ? value * rate : "변환을 지원하지 않습니다.";
+      }
+
+      //변환해주는 함수
       function convertUnits(event) {
         const sourceElement = event.target; // 이벤트가 발생한 요소
         const fromUnit = fromUnitSelect.value; // 변환단위
         const toUnit = toUnitSelect.value; // 결과단위
-        let value = parseFloat(inputValue.value); //입력값
+
+        console.log(unit);
+        // 입력값과 출력값 추적 및 단위 설정
+        if (sourceElement === inputValue) {
+          lastUpdatedElement = inputValue;
+          value = parseFloat(inputValue.value);
+          unit = [fromUnit, toUnit]; // 단위 배열 설정
+        } else if (sourceElement === outputValue) {
+          lastUpdatedElement = outputValue;
+          value = parseFloat(outputValue.value);
+          unit = [toUnit, fromUnit]; // 단위 배열 설정
+        } else if (
+          sourceElement === fromUnitSelect ||
+          sourceElement === toUnitSelect
+        ) {
+          // 단위가 변경되었을 때는 다시 계산 필요
+          if (lastUpdatedElement === inputValue) {
+            unit = [fromUnit, toUnit];
+          } else if (lastUpdatedElement === outputValue) {
+            unit = [toUnit, fromUnit];
+          }
+        }
+
+        console.log(lastUpdatedElement);
 
         // 변환값
-        let convertedValue;
-
+        let convertedValue = convert(
+          value,
+          unit[0],
+          unit[1],
+          unitTypeSelect.value
+        );
+        console.log(unit);
         // 길이
-        function roundToSevenDecimals(value) {
-          // 소수점 자리수가 7자리 이하일 경우 그대로 반환
-          const stringValue = value.toString();
-          const decimalIndex = stringValue.indexOf(".");
-
-          // 소수점이 있고, 소수점 이하 자리가 7자리 이하라면 그대로 반환
-          if (
-            decimalIndex !== -1 &&
-            stringValue.length - decimalIndex - 1 <= 7
-          ) {
-            return value;
-          }
-
-          // 그렇지 않으면 소수점 7자리에서 반올림
-          return Math.round(value * 1e7) / 1e7;
-        }
-
-        // 길이 변환
-        if (unitTypeSelect.value === "length") {
-          // 미터 기준
-          if (fromUnit === "미터" && toUnit === "미터") {
-            convertedValue =
-              value % 1 === 0 ? value : roundToSevenDecimals(value);
-          } else if (fromUnit === "미터" && toUnit === "킬로미터") {
-            convertedValue =
-              (value / 1000) % 1 === 0
-                ? value / 1000
-                : roundToSevenDecimals(value / 1000);
-          } else if (fromUnit === "미터" && toUnit === "센티미터") {
-            convertedValue =
-              (value * 100) % 1 === 0
-                ? value * 100
-                : roundToSevenDecimals(value * 100);
-          } else if (fromUnit === "미터" && toUnit === "밀리미터") {
-            convertedValue =
-              (value * 1000) % 1 === 0
-                ? value * 1000
-                : roundToSevenDecimals(value * 1000);
-          } else if (fromUnit === "미터" && toUnit === "마일") {
-            convertedValue =
-              (value / 1609) % 1 === 0
-                ? value / 1609
-                : roundToSevenDecimals(value / 1609);
-          }
-          // 킬로미터 기준
-          else if (fromUnit === "킬로미터" && toUnit === "미터") {
-            convertedValue =
-              (value * 1000) % 1 === 0
-                ? value * 1000
-                : roundToSevenDecimals(value * 1000);
-          } else if (fromUnit === "킬로미터" && toUnit === "센티미터") {
-            convertedValue =
-              (value * 100000) % 1 === 0
-                ? value * 100000
-                : roundToSevenDecimals(value * 100000);
-          } else if (fromUnit === "킬로미터" && toUnit === "밀리미터") {
-            convertedValue =
-              (value * 1000000) % 1 === 0
-                ? value * 1000000
-                : roundToSevenDecimals(value * 1000000);
-          } else if (fromUnit === "킬로미터" && toUnit === "마일") {
-            convertedValue =
-              (value * 0.621371) % 1 === 0
-                ? value * 0.621371
-                : roundToSevenDecimals(value * 0.621371); // 1킬로미터 = 0.621371 마일
-          } else if (fromUnit === "킬로미터" && toUnit === "킬로미터") {
-            convertedValue =
-              value % 1 === 0 ? value : roundToSevenDecimals(value);
-          }
-
-          // 센티미터 기준
-          else if (fromUnit === "센티미터" && toUnit === "미터") {
-            convertedValue =
-              (value / 100) % 1 === 0
-                ? value / 100
-                : roundToSevenDecimals(value / 100);
-          } else if (fromUnit === "센티미터" && toUnit === "킬로미터") {
-            convertedValue =
-              (value / 100000) % 1 === 0
-                ? value / 100000
-                : roundToSevenDecimals(value / 100000);
-          } else if (fromUnit === "센티미터" && toUnit === "센티미터") {
-            convertedValue =
-              value % 1 === 0 ? value : roundToSevenDecimals(value);
-          } else if (fromUnit === "센티미터" && toUnit === "밀리미터") {
-            convertedValue =
-              (value * 10) % 1 === 0
-                ? value * 10
-                : roundToSevenDecimals(value * 10);
-          } else if (fromUnit === "센티미터" && toUnit === "마일") {
-            convertedValue =
-              (value / 160934.4) % 1 === 0
-                ? value / 160934.4
-                : roundToSevenDecimals(value / 160934.4);
-          }
-          // 밀리미터 기준
-          else if (fromUnit === "밀리미터" && toUnit === "미터") {
-            convertedValue =
-              (value / 1000) % 1 === 0
-                ? value / 1000
-                : roundToSevenDecimals(value / 1000);
-          } else if (fromUnit === "밀리미터" && toUnit === "킬로미터") {
-            convertedValue =
-              (value / 1000000) % 1 === 0
-                ? value / 1000000
-                : roundToSevenDecimals(value / 1000000);
-          } else if (fromUnit === "밀리미터" && toUnit === "센티미터") {
-            convertedValue =
-              (value / 10) % 1 === 0
-                ? value / 10
-                : roundToSevenDecimals(value / 10);
-          } else if (fromUnit === "밀리미터" && toUnit === "밀리미터") {
-            convertedValue =
-              value % 1 === 0 ? value : roundToSevenDecimals(value);
-          } else if (fromUnit === "밀리미터" && toUnit === "마일") {
-            convertedValue =
-              (value / 1609344) % 1 === 0
-                ? value / 1609344
-                : roundToSevenDecimals(value / 1609344);
-          }
-
-          // 마일 기준
-          else if (fromUnit === "마일" && toUnit === "미터") {
-            convertedValue =
-              (value * 1609.34) % 1 === 0
-                ? value * 1609.34
-                : roundToSevenDecimals(value * 1609.34);
-          } else if (fromUnit === "마일" && toUnit === "킬로미터") {
-            convertedValue =
-              (value * 1.60934) % 1 === 0
-                ? value * 1.60934
-                : roundToSevenDecimals(value * 1.60934);
-          } else if (fromUnit === "마일" && toUnit === "센티미터") {
-            convertedValue =
-              (value * 160934) % 1 === 0
-                ? value * 160934
-                : roundToSevenDecimals(value * 160934);
-          } else if (fromUnit === "마일" && toUnit === "밀리미터") {
-            convertedValue =
-              (value * 1609344) % 1 === 0
-                ? value * 1609344
-                : roundToSevenDecimals(value * 1609344);
-          } else if (fromUnit === "마일" && toUnit === "마일") {
-            convertedValue =
-              value % 1 === 0 ? value : roundToSevenDecimals(value);
-          }
-        }
+        // if (unitTypeSelect.value === "length") {
+        //   if (unit[0] === "미터" && unit[1] === "미터") {
+        //     convertedValue = value;
+        //     console.log("1번 실행");
+        //   } else if (unit[0] === "미터" && unit[1] === "킬로미터") {
+        //     convertedValue = value / 1000;
+        //   } else if (unit[0] === "킬로미터" && unit[1] === "미터") {
+        //     convertedValue = value * 1000;
+        //   } else if (unit[0] === "킬로미터" && unit[1] === "킬로미터") {
+        //     convertedValue = value;
+        //   }
+        // }
 
         // 만약 inputValue가 수정되었다면 outputValue를 업데이트
-        // inputValue 수정 시 outputValue 업데이트
         if (
-          (sourceElement === inputValue ||
-            sourceElement === toUnitSelect ||
-            sourceElement === fromUnitSelect) &&
+          (lastUpdatedElement === inputValue ||
+            sourceElement === toUnitSelect) &&
           !isNaN(convertedValue)
         ) {
-          outputValue.value = convertedValue;
+          console.log("인풋수정");
+          // inputValue 수정 시 outputValue 업데이트
+          outputValue.value =
+            convertedValue === 0 || convertedValue
+              ? convertedValue
+              : "변환을 지원하지 않습니다.";
         }
 
         // 만약 outputValue가 수정되었다면 inputValue를 업데이트
-        if (sourceElement === outputValue) {
+        else if (
+          (lastUpdatedElement === outputValue ||
+            sourceElement === fromUnitSelect) &&
+          !isNaN(convertedValue)
+        ) {
+          console.log("아웃풋수정");
           // outputValue 수정 시 inputValue 업데이트
-          inputValue.value = outputValue.value =
+          inputValue.value =
             convertedValue === 0 || convertedValue
               ? convertedValue
               : "변환을 지원하지 않습니다.";
