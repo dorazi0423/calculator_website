@@ -23,7 +23,7 @@
           <div class="header_btn">
             <a href="number-calculator.html" class="btn green1">숫자계산기</a>
             <a href="unit-calculator.html" class="btn green2">단위계산기</a>
-            <a href="daily-calculator.html" class="btn green3">일상계산기</a>
+            <a href="daily-calculator.html" class="btn green3">생일계산기</a>
             <button id="menuToggle" class="menuToggle hidden">
               <img src="img/menuToggle.png" />
             </button>
@@ -36,7 +36,50 @@
         </nav>
         <!-- --헤더 끝-- -->
         <!-- 메인시작 -->
-        <main class="main"></main>
+        <main class="main">
+          <div>
+            <label
+              ><input
+                type="radio"
+                name="conversion-type"
+                value="solar-to-lunar"
+                checked
+              />
+              양력 → 음력</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="conversion-type"
+                value="lunar-to-solar"
+              />
+              음력 → 양력</label
+            >
+          </div>
+
+          <div class="conversion-container">
+            <!-- 양력 → 음력 입력 필드 -->
+            <div class="input-section" id="solar-to-lunar-section">
+              <label for="solar-date">양력 날짜 입력 (YYYY-MM-DD): </label>
+              <input type="date" id="solar-date" />
+              <button onclick="convertToLunar()">변환</button>
+            </div>
+
+            <!-- 음력 → 양력 입력 필드 -->
+            <div class="input-section hidden" id="lunar-to-solar-section">
+              <label for="lunar-date">음력 날짜 입력 (YYYY-MM-DD): </label>
+              <input
+                type="date"
+                id="lunar-date"
+                placeholder="음력 날짜를 입력해주세요"
+              />
+              <button onclick="convertToSolar()">변환</button>
+            </div>
+          </div>
+
+          <!-- 결과 표시 영역 -->
+          <div class="result" id="result"></div>
+        </main>
         <!-- --메인 끝-- -->
       </div>
       <!-- --wrapper 끝-- -->
@@ -124,6 +167,70 @@
           button.style.backgroundColor = ""; // 기본 색상으로 돌아감
         });
       });
+
+      // 라디오 버튼 선택에 따라 변환 섹션 토글
+      document
+        .querySelectorAll('input[name="conversion-type"]')
+        .forEach((radio) => {
+          radio.addEventListener("change", toggleConversionSection);
+        });
+
+      function toggleConversionSection() {
+        const conversionType = document.querySelector(
+          'input[name="conversion-type"]:checked'
+        ).value;
+        if (conversionType === "solar-to-lunar") {
+          document
+            .getElementById("solar-to-lunar-section")
+            .classList.remove("hidden");
+          document
+            .getElementById("lunar-to-solar-section")
+            .classList.add("hidden");
+        } else {
+          document
+            .getElementById("solar-to-lunar-section")
+            .classList.add("hidden");
+          document
+            .getElementById("lunar-to-solar-section")
+            .classList.remove("hidden");
+        }
+        document.getElementById("result").innerText = ""; // 결과 초기화
+      }
+
+      // 양력 → 음력 변환
+      function convertToLunar() {
+        const solarDate = document.getElementById("solar-date").value;
+        if (!solarDate) {
+          alert("양력 날짜를 입력해주세요.");
+          return;
+        }
+
+        const [year, month, day] = solarDate.split("-").map(Number);
+        const lunarDate = lunar.solarToLunar(year, month, day);
+        const lunarString = `${lunarDate.lunarYear}년 ${lunarDate.lunarMonth}월 ${lunarDate.lunarDay}일 (음력)`;
+
+        document.getElementById("result").innerText = lunarString;
+      }
+
+      // 음력 → 양력 변환
+      function convertToSolar() {
+        const lunarDate = document.getElementById("lunar-date").value;
+        if (!lunarDate) {
+          alert("음력 날짜를 입력해주세요.");
+          return;
+        }
+
+        const [lunarYear, lunarMonth, lunarDay] = lunarDate
+          .split("-")
+          .map(Number);
+        const solarDate = lunar.lunarToSolar(lunarYear, lunarMonth, lunarDay);
+        const solarString = `${solarDate.solarYear}년 ${solarDate.solarMonth}월 ${solarDate.solarDay}일 (양력)`;
+
+        document.getElementById("result").innerText = solarString;
+      }
+
+      // 페이지 로드 시 기본 선택값에 맞는 섹션을 활성화
+      toggleConversionSection();
     </script>
   </body>
 </html>

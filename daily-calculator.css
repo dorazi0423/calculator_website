@@ -34,7 +34,7 @@ a {
 
 /* wrapper 헤더 및 메인 */
 .container .wrapper {
-  background-color: #3498db;
+  /* background-color: #3498db; */
   height: 100vh; /* 화면 전체 크기 */
   display: flex;
   justify-content: center;
@@ -53,12 +53,10 @@ a {
   align-items: center;
   text-align: center;
   justify-content: space-between;
-  background-color: yellow;
+  /* background-color: yellow; */
   box-sizing: border-box;
 }
-.container .wrapper .header .header_name {
-  background-color: aquamarine;
-}
+
 .container .wrapper .header .header_btn {
   display: flex;
   gap: 10px; /* 버튼 간격 */
@@ -70,7 +68,7 @@ a {
   border-radius: 15px;
   cursor: pointer;
   font-family: "dalmoori", Arial, sans-serif;
-  background-color: #d31313;
+  /* background-color: #d31313; */
 }
 .container .wrapper .header .header_btn .btn:hover {
   background-color: #a2b130;
@@ -131,6 +129,7 @@ a {
   align-items: center;
   text-align: center;
   gap: 50px;
+  flex-direction: column;
   background-color: #f09ab8;
 }
 
@@ -146,7 +145,7 @@ a {
   text-align: center;
   font-size: 3em;
   font-family: "Gothic_Goding", Arial, sans-serif;
-  background-color: #f39c12;
+  /* background-color: #f39c12; */
 }
 
 /* --푸터-- */
