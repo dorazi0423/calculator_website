@@ -88,11 +88,12 @@
       <!-- --푸터 끝-- -->
     </div>
     <!-- --컨테이너 끝-- -->
+    <script src="https://cdn.jsdelivr.net/npm/korean-lunar-calendar@1.0.9/dist/index.js"></script>
+
     <script>
       const menuToggle = document.getElementById("menuToggle");
       const navMenu = document.getElementById("navMenu");
       const buttons = document.querySelectorAll(".header_btn .btn");
-
       // 화면 크기 변경 시 메뉴 상태 갱신
       function updateMenuVisibility() {
         if (window.innerWidth <= 700) {
@@ -208,26 +209,28 @@
         const [year, month, day] = solarDate.split("-").map(Number);
         const lunarDate = lunar.solarToLunar(year, month, day);
         const lunarString = `${lunarDate.lunarYear}년 ${lunarDate.lunarMonth}월 ${lunarDate.lunarDay}일 (음력)`;
+        // console.log(lunarDate);
+        // console.log(lunarString);
 
-        document.getElementById("result").innerText = lunarString;
+        document.getElementById("result").innerText = lunarDate;
       }
 
       // 음력 → 양력 변환
-      function convertToSolar() {
-        const lunarDate = document.getElementById("lunar-date").value;
-        if (!lunarDate) {
-          alert("음력 날짜를 입력해주세요.");
-          return;
-        }
+      // function convertToSolar() {
+      //   const lunarDate = document.getElementById("lunar-date").value;
+      //   if (!lunarDate) {
+      //     alert("음력 날짜를 입력해주세요.");
+      //     return;
+      //   }
 
-        const [lunarYear, lunarMonth, lunarDay] = lunarDate
-          .split("-")
-          .map(Number);
-        const solarDate = lunar.lunarToSolar(lunarYear, lunarMonth, lunarDay);
-        const solarString = `${solarDate.solarYear}년 ${solarDate.solarMonth}월 ${solarDate.solarDay}일 (양력)`;
+      //   const [lunarYear, lunarMonth, lunarDay] = lunarDate
+      //     .split("-")
+      //     .map(Number);
+      //   const solarDate = lunar.lunarToSolar(lunarYear, lunarMonth, lunarDay);
+      //   const solarString = `${solarDate.solarYear}년 ${solarDate.solarMonth}월 ${solarDate.solarDay}일 (양력)`;
 
-        document.getElementById("result").innerText = solarString;
-      }
+      //   document.getElementById("result").innerText = solarString;
+      // }
 
       // 페이지 로드 시 기본 선택값에 맞는 섹션을 활성화
       toggleConversionSection();

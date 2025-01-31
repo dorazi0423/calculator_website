@@ -132,7 +132,9 @@ a {
   flex-direction: column;
   background-color: #f09ab8;
 }
-
+.result {
+  background-color: #a2b130;
+}
 /* --메인 끝-- */
 /* --wrapper 헤더 및 메인 끝-- */
 
